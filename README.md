@@ -8,7 +8,7 @@
 
   Knox Music is a self-contained, local-first music application with a polished Liquid Glass dark interface — unifying music discovery, playback, lyrics, and radio in one app for desktop and Android.
 
-  ![Version](https://img.shields.io/badge/version-v1.0.2-blue)
+  ![Version](https://img.shields.io/badge/version-v1.0.0-blue)
   ![Status](https://img.shields.io/badge/status-testing-yellow)
   ![Platform](https://img.shields.io/badge/platform-desktop_%7C_android-lightgrey)
   ![Tauri](https://img.shields.io/badge/tauri-v2-orange)
