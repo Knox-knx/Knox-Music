@@ -1,0 +1,1 @@
+{"knox-capability":{"identifier":"knox-capability","description":"Minimal capability set: core window/IPC + opener (reveal data folder). No shell-exec, no global-shortcut, no tray in v1.","local":true,"windows":["main"],"permissions":["core:default","opener:default"]}}

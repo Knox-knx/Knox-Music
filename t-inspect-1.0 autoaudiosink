@@ -1,0 +1,37 @@
+[33mFactory Details:[0m
+  [94mRank                     [0mnone (0)[0m
+  [94mLong-name                [0mAppSink[0m
+  [94mKlass                    [0mGeneric/Sink[0m
+  [94mDescription              [0mAllow the application to get access to raw buffer[0m
+  [94mAuthor                   [0mDavid Schleef <ds@schleef.org>, Wim Taymans <wim.taymans@gmail.com>[0m
+  [94mDocumentation            [0m[0mhttps://gstreamer.freedesktop.org/documentation/app/appsink.html[0m
+
+[33mPlugin Details[0m:
+  [94mName                     [0m[0mapp[0m
+  [94mDescription              [0m[0mElements used to communicate with applications[0m
+  [94mFilename                 [0m[0m/usr/lib/x86_64-linux-gnu/gstreamer-1.0/libgstapp.so[0m
+  [94mVersion                  [0m[0m1.28.6[0m
+  [94mLicense                  [0m[0mLGPL[0m
+  [94mSource module            [0m[0mgst-plugins-base[0m
+  [94mDocumentation            [0m[0mhttps://gstreamer.freedesktop.org/documentation/app/[0m
+  [94mSource release date      [0m[0m2026-08-05[0m
+  [94mBinary package           [0m[0mGStreamer Base Plugins (Debian)[0m
+  [94mOrigin URL               [0m[0mhttps://tracker.debian.org/pkg/gst-plugins-base1.0[0m
+
+[32mGObject[0m
+ [95m+----[0m[32mGInitiallyUnowned[0m
+       [95m+----[0m[32mGstObject[0m
+             [95m+----[0m[32mGstElement[0m
+                   [95m+----[0m[32mGstBaseSink[0m
+                         [95m+----[0m[32mGstAppSink[0m
+
+[33mImplemented Interfaces[0m:
+  [32mGstURIHandler[0m
+
+[33mElement Flags[0m:
+  - [32mSINK[0m
+
+[33mPad Templates[0m:
+  [94mSINK template[0m: [0m'sink'[0m
+    [94mAvailability[0m: [0mAlways[0m
+  
