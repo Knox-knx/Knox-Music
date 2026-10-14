@@ -9,7 +9,7 @@
 ### *Your Music. Your Device. Your Control.*
 
 An ultra-sleek, privacy-first, local-first music powerhouse built for listeners who demand complete ownership of their library.<br />
-Zero telemetry. No cloud account required. Atomic offline storage. Native performance.
+Zero telemetry. No cloud accounts. Spotify, JioSaavn, YouTube, YouTube Music, Radio & Local Library unified into one experience.
 
 <br />
 
@@ -24,12 +24,12 @@ Zero telemetry. No cloud account required. Atomic offline storage. Native perfor
 
 [✨ Features](#-key-features) •
 [⚖️ Why KNOX?](#-why-knox-music) •
-[🏗️ Architecture](#-system-architecture) •
 [🌐 Provider Matrix](#-federated-providers--capabilities) •
+[🏗️ Architecture](#-system-architecture) •
 [🚀 Quick Start](#-quick-start) •
 [📦 Packaging](#-building--packaging) •
 [🐧 Linux Setup](#-linux-desktop-runtime--codecs) •
-[📖 Documentation](#-documentation-index)
+[📖 Documentation](#-directory-structure)
 
 <br />
 
@@ -46,10 +46,27 @@ Traditional streaming services rent you access to music wrapped inside DRM silos
 | **Data Ownership** | **100% Local**: Files & playlists reside on your hardware | Rented access; tracks disappear when licenses expire |
 | **User Privacy** | **Zero Telemetry**: No logging, tracking, or fingerprinting | Continuous behavioural tracking, profiling & targeted ads |
 | **Account Requirement** | **None**: Launch and immediately listen | Mandatory registration, email, payment card, and login |
-| **Offline Capability** | **Atomic Offline Vault**: Real files saved to your disk/DB | Proprietary encrypted blobs that delete if you go offline |
-| **Catalog Freedom** | **Federated**: Local tracks + Open Web + Radio + Curated APIs | Walled garden restricted to one catalog contract |
-| **Audio Pipeline** | **Lossless local playback** + High-bitrate streams | Lossy transcoding with bitrate caps on non-premium tiers |
+| **Offline Capability** | **Atomic Offline Vault**: Real audio saved to your disk/DB | Proprietary encrypted blobs that delete if you go offline |
+| **Catalog Freedom** | **Federated**: Spotify + JioSaavn + YouTube + YT Music + Radio + Local | Walled garden restricted to one catalog contract |
+| **Audio Pipeline** | **Lossless local playback** + High-bitrate streams (320k) | Lossy transcoding with bitrate caps on non-premium tiers |
 | **Price** | **Free & Open Source** forever (MIT) | \$11–\$17 / month subscription fees |
+
+---
+
+## 🌐 Federated Providers & Capabilities
+
+KNOX unites your favorite services through an intelligent, modular provider engine. Search simultaneously, stream seamlessly, and download permanently for offline playback.
+
+| Provider | Search | Streaming | Offline Download | Synced Lyrics | Bitrate | Description |
+|:---|:---:|:---:|:---:|:---:|:---:|:---|
+| 🟢 **Spotify** | 🟢 Yes | 🟢 In-App | 🟢 Permanent | 🟢 Synced | Up to 320 kbps | Full catalog search, album/artist exploration, scraping fallback, and in-app audio resolution engine. |
+| 🟢 **JioSaavn** | 🟢 Yes | 🟢 Direct | 🟢 Permanent | 🟢 Synced | Up to 320 kbps AAC | Extensive Indian & international music catalog, high-bitrate AAC streams, albums, artists, and playlists. |
+| 🟢 **YouTube** | 🟢 Yes | 🟢 Native | 🟢 Permanent | 🟢 Synced | Direct / High | Full audio/video catalog search, YouTube Mix auto-continuation, and download-first local caching. |
+| 🟢 **YouTube Music** | 🟢 Yes | 🟢 In-App | 🟢 Permanent | 🟢 Synced | Direct / High | Native InnerTube protocol via local loopback sidecar (`services/youtubemusic`, stdlib-only Python service). |
+| 📻 **Radio Browser** | 🟢 Yes | 🟢 Live | 🔴 Stream Only | ⚪ None | 128k–320k Live | 30,000+ live public internet radio stations worldwide categorized by country, tag, and genre. |
+| 📂 **Local Library** | 🟢 Yes | 🟢 Native | 🟢 Permanent | 🟢 Local `.lrc` | Lossless / Direct | Your personal local audio collection (`flac`, `wav`, `mp3`, `m4a`, `ogg`, `aac`) with ID3 tag parsing. |
+| 🧪 **Sample Catalog** | 🟢 Yes | 🟢 Direct | 🟢 Permitted | ⚪ None | 192 kbps | Built-in SoundHelix test tracks for development, testing, and offline validation. |
+| 📜 **LRCLIB** | ⚪ Query | ⚪ None | 🟢 Cached (30d) | 🟢 Millisecond | Text / LRC | Open community synchronized lyrics database with real-time scrolling timestamps. |
 
 ---
 
@@ -96,10 +113,10 @@ Traditional streaming services rent you access to music wrapped inside DRM silos
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <h3>🔍 Federated Search & Autoplay</h3>
+      <h3>🔍 Unified Federated Search</h3>
       <ul>
-        <li><b>Debounced Multi-Provider Fan-out</b>: Concurrently searches local and online providers with isolated timeouts and partial result recovery.</li>
-        <li><b>Smart Query Normalization</b>: Cleans search queries and deduplicates across varied provider formats.</li>
+        <li><b>Concurrent Fan-Out</b>: Concurrently queries Spotify, JioSaavn, YouTube, YouTube Music, Radio, and Local Library.</li>
+        <li><b>Smart Deduplication</b>: Cross-references song titles, artists, and durations to present clean search results without clutter.</li>
         <li><b>Vibe Recommendation Engine</b>: Auto-queues matching tracks based on acoustic classification when playlists end.</li>
       </ul>
     </td>
@@ -142,13 +159,13 @@ flowchart TD
     end
 
     subgraph Adapters ["🌐 Provider Adapters"]
-        P_LOC["Local Library"]:::prov
-        P_SAM["Sample Catalog (Demo)"]:::prov
-        P_JAM["Jamendo API"]:::prov
-        P_AIR["AirBeats 320k"]:::prov
-        P_RAD["RadioBrowser"]:::prov
-        P_YTM["YouTube Music Sidecar"]:::prov
-        P_LRC["LRCLIB Lyrics"]:::prov
+        P_SPOT["🟢 Spotify\n(Catalog · Search · In-App Stream)"]:::prov
+        P_JIO["🟢 JioSaavn\n(High-res AAC · Search · Offline)"]:::prov
+        P_YT["🟢 YouTube\n(Sidecar · Mix · Download-First)"]:::prov
+        P_YTM["🟢 YouTube Music\n(InnerTube · Albums · Artists)"]:::prov
+        P_RAD["📻 Radio Browser\n(30,000+ Live Worldwide Stations)"]:::prov
+        P_LOC["📂 Local Library\n(Lossless Disk Audio · ID3 Tags)"]:::prov
+        P_LRC["📜 LRCLIB\n(Synchronized Timed Lyrics)"]:::prov
     end
 
     subgraph NativeLayer ["🖥️ Native OS Shell (Tauri 2)"]
@@ -164,35 +181,18 @@ flowchart TD
     PS --> SM
     DM --> SM
     SM --> DB
-    PM --> P_LOC
-    PM --> P_SAM
-    PM --> P_JAM
-    PM --> P_AIR
-    PM --> P_RAD
+    PM --> P_SPOT
+    PM --> P_JIO
+    PM --> P_YT
     PM --> P_YTM
+    PM --> P_RAD
+    PM --> P_LOC
     PM --> P_LRC
     UI -. IPC Calls .-> RUST
     RUST --> LINUX
     RUST --> ANDR
     RUST --> WIN
 ```
-
----
-
-## 🌐 Federated Providers & Capabilities
-
-KNOX strictly respects provider terms: capabilities are gated honestly per-track and per-source without circumventing licensing.
-
-| Provider | Search | Streaming | Offline Download | Lyrics | Bitrate | Operational Notes |
-|:---|:---:|:---:|:---:|:---:|:---:|:---|
-| 📂 **Local Library** | 🟢 Yes | 🟢 Native | 🟢 Permanent | 🟢 Local `.lrc` | Lossless / Direct | Your personal audio files (`mp3`, `flac`, `m4a`, `wav`, `ogg`, `aac`). |
-| 🧪 **Sample Catalog** | 🟢 Yes | 🟢 Direct | 🟢 Permitted | ⚪ None | 192 kbps | 12 SoundHelix demo tracks for testing and offline validation. |
-| 🎸 **Jamendo** | 🟢 Yes | 🟢 Direct | 🟡 Per-track | ⚪ None | 128–192 kbps | Licensed independent artists via public `client_id`. Gated by `audiodownload_allowed`. |
-| ⚡ **AirBeats** | 🟢 Yes | 🟢 320 kbps | 🟢 Direct | ⚪ None | 320 kbps | Unofficial catalog mirror with full-length high-fidelity streams. |
-| 🏛️ **Internet Archive** | 🟢 Yes | 🟢 Direct | 🟡 Per-item | ⚪ None | Varies | Curated public domain, concerts, and historical recordings. |
-| 📻 **RadioBrowser** | 🟢 Yes | 🟢 Live | 🔴 Stream Only | ⚪ None | Live Streams | 30,000+ public internet radio stations worldwide. |
-| 🔍 **YouTube Music** | 🟢 Yes | 🔴 Disabled | 🔴 Disabled | ⚪ None | *Metadata Only* | Discovery & track lookup via bundled loopback sidecar (`services/youtubemusic`). |
-| 📜 **LRCLIB** | ⚪ Query | ⚪ None | ⚪ Cacheable | 🟢 Synced | Text / LRC | Open synchronized lyrics database with precise millisecond timestamps. |
 
 ---
 
@@ -205,7 +205,7 @@ KNOX strictly respects provider terms: capabilities are gated honestly per-track
 | 🐧 **Linux** | `.rpm` | `x86_64` | Fedora / RHEL package | 🟢 Production |
 | 🤖 **Android** | `.apk` | `arm64-v8a`, `armeabi-v7a`, `x86_64` | Android WebView + Foreground Media Service | 🟢 Production |
 | 🪟 **Windows** | `.exe` | `x64` | NSIS installer via Microsoft WebView2 | 🟢 Ready |
-| 🌐 **Modern Web** | Progressive Web App | All browsers | Service Worker + IndexedDB | 🟢 Production |
+| 🌐 **Modern Web** | Progressive Web App | All modern browsers | Service Worker + IndexedDB | 🟢 Production |
 
 ---
 
@@ -215,14 +215,14 @@ KNOX strictly respects provider terms: capabilities are gated honestly per-track
 Ensure you have the following installed on your development machine:
 - **Node.js**: `v20.0.0` or higher ([Download](https://nodejs.org/))
 - **npm**: `v10.x` or higher
-- **Python**: `3.10+` (for the local discovery sidecar)
+- **Python**: `3.10+` (for the local YouTube Music discovery sidecar)
 - **Rust Toolchain**: `1.75+` *(only needed for desktop/Tauri builds)*
 
 ### 2. Clone & Install
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/knox-music.git
-cd knox-music
+git clone https://github.com/Knox-knx/Knox-Music.git
+cd Knox-Music
 
 # Install Node dependencies
 npm install
@@ -399,7 +399,7 @@ MusicProvider/
 │   ├── 📁 downloads/          # Resumable DownloadManager
 │   ├── 📁 library/            # Local directory scanner & ID3 tag parser
 │   ├── 📁 os/                 # MediaSession API, hardware keys & native notifications
-│   ├── 📁 providers/          # Modular music providers (Jamendo, AirBeats, etc.)
+│   ├── 📁 providers/          # Modular providers (Spotify, JioSaavn, YouTube, Radio, etc.)
 │   ├── 📁 screens/            # Top-level route views (Home, Search, Library, Settings, etc.)
 │   ├── 📁 search/             # Query normalizer, parser, deduplicator & ranker
 │   ├── 📁 settings/           # Persistent user settings store
@@ -427,12 +427,12 @@ cp .env.example .env
 
 | Environment Variable | Default Value | Purpose |
 |:---|:---|:---|
-| `VITE_JAMENDO_CLIENT_ID` | `ecadb32a` | Public Jamendo API client identifier. Safe for frontend use. |
-| `VITE_JAMENDO_API_BASE_URL` | `https://api.jamendo.com/v3.0` | Base URL for Jamendo queries. |
-| `VITE_AIRBEATS_API_BASE_URL` | `https://api.airbeats.xyz` | Endpoint for high-bitrate AirBeats catalog. |
-| `VITE_INTERNET_ARCHIVE_API_BASE_URL` | `https://archive.org` | Query base for Internet Archive audio collections. |
-| `VITE_FREETOUSE_API_BASE_URL` | `/api/freetouse` | Vite dev proxy path to bypass CORS restrictions. |
+| `VITE_JIOSAAVN_API_BASE_URL` | `https://www.jiosaavn.com/api.php` | Base endpoint for JioSaavn searches and metadata. |
+| `VITE_SPOTIFY_API_BASE_URL` | `https://api.spotify.com/v1` | Public endpoint for Spotify catalog browsing. |
 | `VITE_YOUTUBEMUSIC_API_BASE_URL` | `http://127.0.0.1:5000` | Loopback address for the local Python discovery sidecar. |
+| `VITE_RADIO_BROWSER_API_BASE_URL` | `https://de1.api.radio-browser.info` | Public community radio database endpoint. |
+| `VITE_LRCLIB_API_BASE_URL` | `https://lrclib.net` | Open timestamped synchronized lyrics endpoint. |
+| `VITE_REQUEST_TIMEOUT_MS` | `15000` | Per-provider timeout budget in milliseconds. |
 
 > [!WARNING]
 > Never put private tokens or client secrets in `.env`. Frontend code compiles directly into client-visible bundles.
@@ -453,9 +453,9 @@ KNOX includes an early startup repair hook (`src-tauri/src/gst_env.rs`) that aut
 </details>
 
 <details>
-<summary><b>2. Why are YouTube Music tracks labeled "Discovery" and not playable?</b></summary>
+<summary><b>2. How does YouTube & YouTube Music playback work?</b></summary>
 <br />
-KNOX strictly respects licensing boundaries. The bundled YouTube Music loopback sidecar provides <b>search and metadata discovery only</b>. It is not an audio ripper or stream scraper. To stream music, use our authorized streaming providers (AirBeats, Jamendo, RadioBrowser, or your Local Library).
+YouTube tracks utilize a download-first caching strategy via the bundled audio service, validating audio integrity and saving tracks permanently for offline playback. YouTube Music uses a lightweight Python loopback sidecar (`services/youtubemusic`) with zero required API keys.
 </details>
 
 <details>
