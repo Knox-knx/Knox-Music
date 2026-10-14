@@ -1,0 +1,23 @@
+[package]
+name = "tauri-plugin-knox-media"
+version = "1.1.5"
+links = "tauri-plugin-knox-media"
+description = "KNOX Music native media surface: MediaSession + mediaPlayback foreground service on Android. No-op elsewhere."
+authors = ["KNOX"]
+license = "MIT"
+edition = "2021"
+
+[lib]
+name = "tauri_plugin_knox_media"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-plugin = { version = "2", features = ["build"] }
+
+[dependencies]
+tauri = { version = "2" }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+[features]
+default = []

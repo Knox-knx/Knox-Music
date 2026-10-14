@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>KNOX Tauri/WebKitGTK minimal input diagnostic</title>
+<!--
+  Minimal native input diagnostic (NOT part of the app UI).
+
+  Purpose: isolate the Tauri → GTK/WebKitGTK → IME → WebView → DOM input
+  path from ALL KNOX application logic. This page has:
+    - no React, no ProviderManager, no sidecars, no overlays,
+    - no global shortcuts, no keydown preventDefault anywhere,
+    - a single autofocused <input> plus a passive event log.
+
+  How to run it inside the real Tauri/WebKitGTK environment:
+    1. `npm run build` (this file is copied from public/ into dist/ as-is).
+    2. Temporarily point a Tauri window at it, e.g. add a second window to
+       src-tauri/tauri.conf.json with `"url": "tauri-input-diag.html"`,
+       then `cargo tauri dev` (or build the AppImage and test the AppImage).
+    3. Click the input and type: abc 123 <space> <backspace>, paste, arrows,
+       Home/End, Enter. Every DOM event the WebView delivers is appended to
+       the log table below. REVERT the temporary window afterwards.
+
+  Reading the log (matches the bug report's CASE A–D taxonomy):
+    - mousedown + focus + keydown + beforeinput + input  → native path OK;
+      if the app's search fields still fail, the bug is application-level.
+    - mousedown + focus + keydown but no beforeinput/input → CASE A:
+      keyboard→text conversion (IME) issue.
+    - mousedown + focus but no keydown → CASE B: native WebView/GDK event
+      issue (this is what the IBus "Events queue growing too big" failure
+      looks like — key events are queued/dropped before the DOM).
+    - keydown/input fire but a framework value doesn't update → CASE C:
+      application state issue (not native).
+    - nothing after click → CASE D: focus/window interception issue.
+-->
+<style>
+  body { font-family: system-ui, sans-serif; background: #101018; color: #eee;
+         margin: 2rem; }
+  #test { font-size: 1.5rem; padding: .5rem; width: min(32rem, 90vw); }
+  table { border-collapse: collapse; margin-top: 1rem; font-size: .85rem; }
+  th, td { border: 1px solid #444; padding: .2rem .6rem; text-align: left; }
+  #hint { color: #aaa; max-width: 44rem; }
+</style>
+</head>
+<body>
+<h1>Tauri/WebKitGTK input diagnostic</h1>
+<p id="hint">Click the field, then type <kbd>abc 123</kbd>, space, backspace,
+paste, arrows, Home/End, Enter. Events delivered by the WebView appear below.
+No JavaScript here ever calls focus(), blur(), or preventDefault().</p>
+<input id="test" autofocus placeholder="type here: abc 123" />
+<table>
+  <thead><tr><th>#</th><th>type</th><th>key</th><th>inputType</th><th>data</th><th>value</th></tr></thead>
+  <tbody id="log"></tbody>
+</table>
+<script>
+  (function () {
+    var input = document.getElementById('test');
+    var log = document.getElementById('log');
+    var n = 0;
+    function row(type, e) {
+      n += 1;
+      var tr = document.createElement('tr');
+      var cells = [n, type,
+        e && e.key !== undefined ? e.key : '',
+        e && e.inputType !== undefined ? e.inputType : '',
+        e && e.data !== undefined && e.data !== null ? e.data : '',
+        input.value];
+      cells.forEach(function (c) {
+        var td = document.createElement('td');
+        td.textContent = String(c);
+        tr.appendChild(td);
+      });
+      log.appendChild(tr);
+    }
+    ['mousedown', 'focus', 'keydown', 'beforeinput', 'input', 'keyup',
+     'compositionstart', 'compositionupdate', 'compositionend',
+     'paste', 'copy', 'cut'].forEach(function (t) {
+      input.addEventListener(t, function (e) { row(t, e); });
+    });
+  })();
+</script>
+</body>
+</html>

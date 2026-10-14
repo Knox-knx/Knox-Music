@@ -1,0 +1,8 @@
+# KNOX YouTube Music sidecar — stdlib only, no third-party packages.
+# There is intentionally nothing to install: `python3 app.py --port 5000`.
+# (This file exists so install tooling and auditors see the empty surface.)
+#
+# The service speaks the YouTube Music InnerTube protocol (the same API the
+# optional `ytmusicapi` package wraps). If `ytmusicapi` happens to be
+# installed it is used opportunistically — but production bundling never
+# requires pip, venv, Flask, or requests.
