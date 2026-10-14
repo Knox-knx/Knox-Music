@@ -1,0 +1,17 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+  <!-- Background audio: the mediaPlayback foreground service keeps the
+       process (and the WebView audio element) alive when the app is
+       backgrounded. POST_NOTIFICATIONS gates the notification card on
+       Android 13+; playback itself never depends on the grant. -->
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+  <uses-permission android:name="android.permission.WAKE_LOCK" />
+  <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+  <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+  <application>
+    <service
+      android:name="com.knox.music.knoxmedia.MusicPlaybackService"
+      android:foregroundServiceType="mediaPlayback"
+      android:exported="false" />
+  </application>
+</manifest>

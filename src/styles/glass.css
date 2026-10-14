@@ -1,0 +1,126 @@
+/* KNOX Glass Design System — reusable surface hierarchy (§4, §34).
+   Imported once via global.css. Prefer these utilities for NEW surfaces;
+   existing components keep their selectors (upgraded in global.css) so no
+   JSX churn is needed.
+
+   LEVEL 1 — whisper: dense-list rows at rest, inline permission rows.
+   LEVEL 2 — cards, panels, result containers.
+   LEVEL 3 — floating chrome: sidebar, topbars, player bar, mini player.
+   LEVEL 4 — menus, toasts, queue panel, bottom nav.
+   LEVEL 5 — focused sheets/dialogs/drawer.
+
+   Performance (§30): backdrop-filter lives ONLY on levels 3–5 and on
+   :hover/:focus-within states — never on hundreds of resting rows. */
+
+.glass-1 {
+  background: var(--glass-1-bg);
+  border: 1px solid var(--glass-border-soft);
+  border-radius: var(--glass-radius);
+  box-shadow: var(--glass-highlight);
+}
+
+.glass-2 {
+  background: var(--glass-2-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--glass-radius);
+  box-shadow: var(--glass-shadow-1), var(--glass-highlight);
+  backdrop-filter: blur(var(--glass-blur-sm)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--glass-blur-sm)) saturate(140%);
+}
+
+.glass-3 {
+  background: var(--glass-3-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--glass-radius);
+  box-shadow: var(--glass-shadow-2), var(--glass-highlight);
+  backdrop-filter: blur(var(--glass-blur-md)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--glass-blur-md)) saturate(140%);
+}
+
+.glass-4 {
+  background: var(--glass-4-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--glass-radius-l);
+  box-shadow: var(--glass-shadow-2), var(--glass-highlight);
+  backdrop-filter: blur(var(--glass-blur-md)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--glass-blur-md)) saturate(150%);
+}
+
+.glass-5 {
+  background: var(--glass-5-bg);
+  border: 1px solid var(--glass-border-strong);
+  border-radius: var(--glass-radius-l);
+  box-shadow: var(--glass-shadow-3), var(--glass-highlight);
+  backdrop-filter: blur(var(--glass-blur-lg)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--glass-blur-lg)) saturate(150%);
+}
+
+/* Interactive glass: rest at level 1, lift on hover/focus, press on active.
+   For dense lists — invisible becomes glass only when engaged. */
+.glass-interactive {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--glass-radius);
+  transition:
+    background var(--motion-normal) var(--motion-ease),
+    border-color var(--motion-normal) var(--motion-ease),
+    transform var(--motion-normal) var(--motion-ease),
+    box-shadow var(--motion-normal) var(--motion-ease);
+}
+
+.glass-interactive:hover {
+  background: var(--glass-1-bg);
+  border-color: var(--glass-border-soft);
+  box-shadow: var(--glass-highlight);
+  backdrop-filter: blur(var(--glass-blur-sm)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--glass-blur-sm)) saturate(140%);
+}
+
+.glass-interactive:active {
+  background: var(--glass-2-bg);
+  border-color: var(--glass-border);
+  transform: none;
+}
+
+/* ============ Liquid Glass & 3D Materials ============ */
+.glass-liquid {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.035) 48%, rgba(139, 92, 246, 0.08) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 18px 45px -8px rgba(0, 0, 0, 0.65), inset 0 1px 1.5px rgba(255, 255, 255, 0.3), inset 0 -1px 1px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(30px) saturate(190%) contrast(104%);
+  -webkit-backdrop-filter: blur(30px) saturate(190%) contrast(104%);
+  position: relative;
+}
+
+.glass-liquid::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.16), transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* 3D Elevated Surfaces */
+.surface-3d {
+  transform-style: preserve-3d;
+  perspective: var(--perspective);
+  transition: transform 0.28s var(--glass-ease), box-shadow 0.28s var(--glass-ease);
+}
+
+.surface-3d:hover {
+  transform: translateY(-3px) translateZ(8px);
+  box-shadow: var(--glass-3d-shadow);
+}
+
+/* High-contrast / forced-colors: translucency becomes solid so text stays
+   readable when the OS strips transparency. */
+@media (forced-colors: active) {
+  .glass-1, .glass-2, .glass-3, .glass-4, .glass-5,
+  .glass, .card, .glass-interactive:hover, .glass-liquid {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+

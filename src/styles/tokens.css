@@ -1,0 +1,105 @@
+/* KNOX Music design tokens — dark-first liquid glass identity.
+   Dark is the primary KNOX identity; light values mirror the same system. */
+:root {
+  --bg-0: #07070d;
+  --bg-1: #0b0b12;
+  --bg-2: #12121c;
+  --bg-3: #1a1a28;
+  --glass: rgba(255, 255, 255, 0.06);
+  --glass-strong: rgba(255, 255, 255, 0.1);
+  --border: rgba(255, 255, 255, 0.09);
+  --text-1: #ffffff;
+  --text-2: rgba(255, 255, 255, 0.90);
+  --text-3: rgba(255, 255, 255, 0.70);
+
+  /* --- Liquid glass material system (single source of truth) --- */
+  --glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.11) 0%, rgba(255, 255, 255, 0.035) 50%, rgba(139, 92, 246, 0.06) 100%);
+  --glass-bg-hover: linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.06) 50%, rgba(34, 211, 238, 0.09) 100%);
+  --glass-border: rgba(255, 255, 255, 0.14);
+  --glass-border-soft: rgba(255, 255, 255, 0.08);
+  --glass-border-strong: rgba(255, 255, 255, 0.25);
+  --glass-highlight: inset 0 1px 1px rgba(255, 255, 255, 0.24), inset 0 -1px 1px rgba(0, 0, 0, 0.25);
+  --glass-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.6), 0 4px 14px rgba(0, 0, 0, 0.35);
+  --glass-3d-shadow: 0 24px 50px -10px rgba(0, 0, 0, 0.75), 0 0 30px rgba(139, 92, 246, 0.25);
+  --glass-blur: 14px;
+  --glass-blur-sm: 10px;
+  --glass-blur-md: 14px;
+  --glass-blur-lg: 22px;
+  --glass-radius: 18px;
+  --glass-radius-s: 12px;
+  --glass-radius-l: 26px;
+  --glass-ease: cubic-bezier(0.2, 0.9, 0.25, 1);
+  --glass-fast: 160ms;
+  --perspective: 1200px;
+
+  --accent: #38bdf8;
+  --accent-2: #22d3ee;
+  --accent-grad: linear-gradient(135deg, #38bdf8 0%, #6366f1 40%, #a855f7 100%);
+  --accent-soft: rgba(56, 189, 248, 0.18);
+  --success: #34d399;
+  --warning: #fbbf24;
+  --danger: #f87171;
+  --match-exact: #34d399;
+  --match-strong: #22d3ee;
+  --match-partial: rgba(255, 255, 255, 0.85);
+  --match-related: rgba(255, 255, 255, 0.65);
+  --radius-s: 10px;
+  --radius-m: 16px;
+  --radius-l: 24px;
+  --shadow-1: 0 8px 30px rgba(0, 0, 0, 0.45);
+  --shadow-2: 0 18px 60px rgba(0, 0, 0, 0.55);
+  --font: 'Plus Jakarta Sans', 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  --sidebar-w: 264px;
+  --player-h: 88px;
+
+  /* --- Android-UI compatibility aliases (white-first readability) --- */
+  --accent-gold: #ffffff;
+  --accent-olive: #38bdf8;
+  --live-red: #f87171;
+  --status-online: #34d399;
+  --status-live: #f87171;
+  --text-primary: var(--text-1);
+  --text-secondary: var(--text-2);
+  --text-tertiary: var(--text-3);
+  --text-muted: var(--text-3);
+  --divider: var(--border);
+  --border-default: var(--border);
+  --border-accent: rgba(255, 255, 255, 0.22);
+  --bg-base: var(--bg-0);
+  --bg-panel: var(--glass);
+  --bg-row: rgba(255, 255, 255, 0.05);
+  --font-display: var(--font);
+  --font-body: var(--font);
+  --radius-tile: var(--radius-m);
+  --radius-sheet: var(--radius-l);
+  --radius-pill: 999px;
+  --screen-pad-x: 20px;
+  --grid-gutter: 12px;
+  --selection-bg: var(--accent-soft);
+  --caret-color: var(--accent);
+}
+
+[data-theme='light'] {
+  --bg-0: #07070d;
+  --bg-1: #0b0b12;
+  --bg-2: #12121c;
+  --bg-3: #1a1a28;
+  --glass: rgba(255, 255, 255, 0.08);
+  --glass-strong: rgba(255, 255, 255, 0.14);
+  --border: rgba(255, 255, 255, 0.12);
+  --text-1: #ffffff;
+  --text-2: rgba(255, 255, 255, 0.90);
+  --text-3: rgba(255, 255, 255, 0.70);
+  --glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.05));
+  --glass-bg-hover: linear-gradient(135deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.08));
+  --glass-border: rgba(255, 255, 255, 0.16);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  --glass-shadow: 0 12px 40px rgba(0, 0, 0, 0.65), 0 2px 8px rgba(0, 0, 0, 0.4);
+  --accent-soft: rgba(56, 189, 248, 0.18);
+  --match-partial: rgba(255, 255, 255, 0.85);
+  --match-related: rgba(255, 255, 255, 0.65);
+  --shadow-1: 0 8px 30px rgba(0, 0, 0, 0.55);
+  --shadow-2: 0 18px 60px rgba(0, 0, 0, 0.7);
+}
+
+* { box-sizing: border-box; }
